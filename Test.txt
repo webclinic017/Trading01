@@ -1,0 +1,17 @@
+https://paperswithcode.com/task/time-series-forecasting
+
+https://paperswithcode.com/sota/time-series-forecasting-on-etth1-24
+
+https://arxiv.org/pdf/2106.09305v2.pdf
+
+http://www.psicothema.com/PDF/3889.pdf
+
+https://towardsdatascience.com/transformers-141e32e69591
+
+https://jalammar.github.io/illustrated-transformer/
+
+transformers-------
+transformer neural network example
+
+
+
