@@ -37,12 +37,15 @@ def f01():
         b -= learning_rate * grad_b
         c -= learning_rate * grad_c
         d -= learning_rate * grad_d
-
     print(f'Result: y = {a} + {b} x + {c} x^2 + {d} x^3')
+
+def f02():
+    pass
+
 def print_hi(name):
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
 if __name__ == '__main__':
     print_hi('PyCharm')
-    f01()
+#    f01()
 
