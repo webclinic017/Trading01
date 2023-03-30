@@ -1,0 +1,61 @@
+# https://pytorch.org/tutorials/recipes/recipes/benchmark.html
+import torch
+import timeit
+import torch.utils.benchmark as benchmark
+
+x = torch.randn(10000, 64)
+
+
+def batched_dot_mul_sum(a, b):
+  '''Computes batched dot by multiplying and summing'''
+  return a.mul(b).sum(-1)
+
+
+def batched_dot_bmm(a, b):
+  '''Computes batched dot by reducing to bmm'''
+  a = a.reshape(-1, 1, a.shape[-1])
+  b = b.reshape(-1, b.shape[-1], 1)
+  dd =  torch.bmm(a, b).flatten(-3)
+  return dd
+
+def f01():
+  # Input for benchmarking
+
+  # Ensure that both functions compute the same output
+  assert batched_dot_mul_sum(x, x).allclose(batched_dot_bmm(x, x))
+
+  t0 = timeit.Timer(
+    stmt='batched_dot_mul_sum(x, x)',
+    setup='from __main__ import batched_dot_mul_sum',
+    globals={'x': x})
+
+  t1 = timeit.Timer(
+    stmt='batched_dot_bmm(x, x)',
+    setup='from __main__ import batched_dot_bmm',
+    globals={'x': x})
+
+  print(f'mul_sum(x, x):  {t0.timeit(100) / 100 * 1e6:>5.1f} us')
+  print(f'bmm(x, x):      {t1.timeit(100) / 100 * 1e6:>5.1f} us')
+  j=1
+
+def f02():
+  pass
+  t0 = benchmark.Timer(
+    stmt='batched_dot_mul_sum(x, x)',
+    setup='from __main__ import batched_dot_mul_sum',
+    globals={'x': x})
+
+  t1 = benchmark.Timer(
+    stmt='batched_dot_bmm(x, x)',
+    setup='from __main__ import batched_dot_bmm',
+    globals={'x': x})
+
+  print(t0.timeit(100))
+  print(t1.timeit(100))
+
+
+if __name__ == '__main__':
+  f01()
+  f02()
+  j=1;
+

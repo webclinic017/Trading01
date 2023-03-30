@@ -75,7 +75,7 @@ test_data = datasets.FashionMNIST(
     transform=ToTensor(),
 )
 
-batch_size = 64
+batch_size = 32
 
 # Create data loaders.
 train_dataloader = DataLoader(training_data, batch_size=batch_size)
@@ -107,6 +107,7 @@ print("Done!")
 torch.save(model.state_dict(), "model.pth")
 print("Saved PyTorch Model State to model.pth")
 
+
 model = NeuralNetwork()
 model.load_state_dict(torch.load("model.pth"))
 
@@ -123,8 +124,10 @@ classes = [
     "Ankle boot",
 ]
 
+
+
 model.eval()
-x, y = test_data[0][0], test_data[0][1]
+x, y = test_data[1][0], test_data[1][1]
 with torch.no_grad():
     pred = model(x)
     predicted, actual = classes[pred[0].argmax(0)], classes[y]
