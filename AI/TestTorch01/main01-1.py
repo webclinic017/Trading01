@@ -135,11 +135,11 @@ if __name__ == '__main__':
   _path = "model.pth"
   model = NeuralNetwork()
 
-  if not os.path.isfile(_path):
-    calc_dan()
-  else:
+  if os.path.isfile(_path):
     model.load_state_dict(torch.load("model.pth"))
     test_data = download_test_data()
+  else:
+    calc_dan()
 
   model.eval()
   x, y = test_data[2][0], test_data[2][1]
