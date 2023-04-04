@@ -43,6 +43,7 @@ def test(dataloader, model, loss_fn):
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super().__init__()
+        self.k=0
         self.flatten = nn.Flatten()
         self.linear_relu_stack = nn.Sequential(
             nn.Linear(28*28, 512),
@@ -97,7 +98,7 @@ print(model)
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
 
-epochs = 10
+epochs = 2
 for t in range(epochs):
     print(f"Epoch {t+1}\n-------------------------------")
     train(train_dataloader, model, loss_fn, optimizer)
