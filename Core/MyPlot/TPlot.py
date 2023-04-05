@@ -17,6 +17,14 @@ class TPlot():
 
 
     def RunOneWin(self,  *args, **kwargs):
+
+        # if(isinstance(args[0], list)):
+        #   plt.figure()
+        #   plt.plot(args[0])
+        #   plt.grid()
+        #   plt.show()
+        #   return
+
         self._fread = kwargs.get("fread", None)
 
         if self._fread is None:
@@ -54,8 +62,26 @@ class TPlot():
 
     def PlotDict(self, dmas):
         plt.figure()
-        plt.title(f"{dmas['title']}  ")
-        plt.plot(dmas['t'], dmas['d'], dmas['t'], dmas['r'])
+        _title = dmas.get('title', "-")
+        plt.title(f"{_title}  ")
+        ikey=0
+        ikey=ikey+(1 if "d" in dmas.keys() else 0)
+        ikey=ikey+(2 if "r" in dmas.keys() else 0)
+        match ikey:
+            case 0:
+                return
+            case 1:
+                if "t" in dmas.keys():
+                    plt.plot(dmas['t'], dmas['d'])
+                else:
+                    plt.plot(dmas['d'])
+            case 2:
+                if "t" in dmas.keys():
+                    plt.plot(dmas['t'], dmas['r'])
+                else:
+                    plt.plot(dmas['r'])
+            case 3:
+                plt.plot(dmas['t'], dmas['d'], dmas['t'], dmas['r'])
         plt.grid()
         plt.show()
 
