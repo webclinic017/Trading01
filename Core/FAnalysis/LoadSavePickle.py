@@ -36,11 +36,33 @@ class LoadSavePickle:
                     pickle.dump(self, fp)
         k=1
 
+    def save_path(self, path):
+        d = self._args[0]
+        _key = list(d.keys())
+
+        self.__setattr__('mykey', _key)
+        for item in _key:
+            self.__setattr__(item, d[item])
+
+        if os.path.exists(path):
+            os.remove(path)
+
+
+        with open(path, "wb") as fp:
+                    pickle.dump(self, fp)
+        k=1
+
+
     def load_pickle(self, *args):
         if args.__len__() <= 0:
             return
 
         with open(args[0], "rb") as fp:
+            a1 = pickle.load(fp)
+            return a1
+    def load_path(self, path):
+
+        with open(path, "rb") as fp:
             a1 = pickle.load(fp)
             return a1
 

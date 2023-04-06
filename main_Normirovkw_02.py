@@ -8,58 +8,19 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
 from sklearn import linear_model
+from LoadSavePickle import LoadSavePickle
 
-'''
- z= np.array(_dan['ohl'])
+from scipy import signal
+import matplotlib.pyplot as plt
 
-    _count = len(z)
-    xx=np.zeros(_count)
-    P = np.zeros(_count)
-    Ndisp=60*2
-    disper = np.zeros(Ndisp).tolist()
-    enx =  np.zeros(Ndisp).tolist()
-    xx[0]=z[0]
-    P[0]=1
-    r=1 #0.999
-    en=0.1
-#    dNoise=12
-    r2=r*r
-    en2=en*en
-    DP=np.zeros(_count)
-    DM=np.zeros(_count)
-    print(' Расчет  !!!')
-    for i in range(1, _count):
-        disper.pop(0)
-        disper.append(z[i-1])
-#        dNoise = np.var(disper)
-        dNoise = np.std(disper)
-        enx.pop(0)
-        enx.append(xx[i-1])
-        f0 = lambda x, y: x-y
-        lsx = list(map(f0,disper, enx))
-        en=np.std(lsx)
-
-        # en=np.var(enx)
-
-        Pe=r2*P[i-1]+en*en
-        P[i] = (Pe*dNoise)/(Pe+dNoise)
-        xx[i]=r*xx[i-1]+P[i]/dNoise*(z[i]-r*xx[i-1])
-        DP[i]=xx[i]+en*0.7
-        DM[i]=xx[i]-en*0.7
+sos = signal.ellip(2, 0.1, 25, 10, 'lowpass', fs=250, output='sos')  # hp
 
 
-        # Pe=r2*P[i-1]+en2
-        # P[i] = (Pe*dNoise)/(Pe+dNoise)
-        # xx[i]=r*xx[i-1]+P[i]/dNoise*(z[i]-r*xx[i-1])
+def filterEleps(d):
+  # sos = signal.ellip(8, 1, 100, 17, 'low', fs=1000, output='sos')  #  hp
+  filtered = signal.sosfilt(sos, d)
+  return  filtered
 
-
-#    my_plot(_dan['ohl'])
-#    my_plot(z, xx, DP, DM)
-    my_plot(z, xx, _dan_d)
-    kk = 1
-
-
-'''
 def filterKalmana(d):
   z = np.array(d)
   _count = len(z)
@@ -105,6 +66,31 @@ def filterKalmana(d):
   # my_plot(z, xx, _dan_d)
   # kk = 1
 
+def filterKaufmana(d, n):
+  __count = len(d)
+  d0 = np.array(d)
+  d1 = np.append(0, d0)[:__count]
+  d1 = np.abs(d0-d1)
+  d1[0]=0
+  y = np.array(d)
+  __fast = 2/(2+1)
+  __slow = 2/(30+1)
+  __fas_slow =__fast - __slow
+
+  _stdp = np.array(d)
+  _stdm = np.array(d)
+
+  for i in range(n, __count):
+    _sum = np.sum(d1[i-n: i+1])
+    _std = np.std(d1[i-n: i+1])*2
+    _eff1 = (d0[i]- d0[i-n])
+    _eff = (d0[i]- d0[i-n])/_sum
+    _c1 = np.power(_eff*__fas_slow+__slow, 2)
+    y[i] = d0[i]*_c1+(1-_c1)*y[i-1]
+    _stdp[i] = y[i]+_std
+    _stdm[i] = y[i]-_std
+
+  return y, _stdp, _stdm
 
 if __name__ == '__main__':
   print(" ===> Start programm  db 01 <===")
@@ -123,6 +109,28 @@ if __name__ == '__main__':
   _n_end = _count_close//_n_step
   _mclose = np.array(_close[:_n_count])
 
+
+  masg = {'d': _close}
+  # masg['r']=list(_regress)
+  # masg['r']=filterKalmana(mas_price)
+  # masg['r'] = filterEleps(_close)
+  r,  _stdp, _stdm  = filterKaufmana(_close, 4)
+  masg['r'] = r
+  masg['stdp'] = _stdp
+  masg['stdm'] = _stdm
+
+  _path_kaufman = "E:\\MLserver\\Trading01\\NotGit\\Data\\fkaufman.pkl"
+  _sPickle = LoadSavePickle({"close": _close, "fk":r, 'kp':_stdp, 'km':_stdm})
+  _sPickle.save_path(_path_kaufman)
+
+  _lPickle = LoadSavePickle()
+  xx = _lPickle.load_path(_path_kaufman)
+  x0 =xx.fk
+
+  # masg['t'] = [k0 for k0 in range(len(_close))]
+  # masg['t'] = range(len(_close))
+  # _tPlot.PlotDict(masg, False)
+  # PltShow()
   for i in range(_n_count, _count_close, _n_step):
     print(i)
     m = np.array(_close[i:i+_n_step])
@@ -138,7 +146,8 @@ if __name__ == '__main__':
 
     masg={'d':mas_price}
     # masg['r']=list(_regress)
-    masg['r']=filterKalmana(mas_price)
+    # masg['r']=filterKalmana(mas_price)
+    masg['r']=filterEleps(mas_price)
     masg['t']=[k0 for k0 in range(len(mas_price))]
     _tPlot.PlotDict(masg)
 

@@ -60,30 +60,35 @@ class TPlot():
                 k=1
 #        plt.show()
 
-    def PlotDict(self, dmas):
-        plt.figure()
+    def PlotDict(self, dmas, show=True):
         _title = dmas.get('title', "-")
+        _t = dmas.get('t', [])
+        try:
+            _ = dmas.pop('title')
+        except:
+            pass
+        try:
+            _ = dmas.pop('t')
+        except:
+            pass
+
+        _count_key = dmas.keys()
+        if len(_count_key) < 1:
+            return
+
+        if len(_t)==0:
+          _s =  list(_count_key)[0]
+          _t = range(len(dmas[ list(_count_key)[0]]))
+
+        plt.figure()
         plt.title(f"{_title}  ")
-        ikey=0
-        ikey=ikey+(1 if "d" in dmas.keys() else 0)
-        ikey=ikey+(2 if "r" in dmas.keys() else 0)
-        match ikey:
-            case 0:
-                return
-            case 1:
-                if "t" in dmas.keys():
-                    plt.plot(dmas['t'], dmas['d'])
-                else:
-                    plt.plot(dmas['d'])
-            case 2:
-                if "t" in dmas.keys():
-                    plt.plot(dmas['t'], dmas['r'])
-                else:
-                    plt.plot(dmas['r'])
-            case 3:
-                plt.plot(dmas['t'], dmas['d'], dmas['t'], dmas['r'])
-        plt.grid()
-        plt.show()
+
+        for it in _count_key:
+            plt.plot(_t, dmas[it])
+
+        plt.grid(True)
+        if show:
+            plt.show()
 
     def add_plot(self, **kwargs):
         _nplot = kwargs.get('nplot', len(self._dan_plot))

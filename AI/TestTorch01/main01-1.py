@@ -132,14 +132,19 @@ def calc_dan():
 
 
 if __name__ == '__main__':
+  device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
+  print(f"Using {device} device")
+
   _path = "model.pth"
   model = NeuralNetwork()
 
-  if os.path.isfile(_path):
-    model.load_state_dict(torch.load("model.pth"))
-    test_data = download_test_data()
-  else:
-    calc_dan()
+  # if os.path.isfile(_path):
+  #   model.load_state_dict(torch.load("model.pth"))
+  #   test_data = download_test_data()
+  # else:
+  #   calc_dan()
+  test_data = download_test_data()
+  calc_dan()
 
   model.eval()
   x, y = test_data[2][0], test_data[2][1]
