@@ -1,3 +1,4 @@
+from ConfigDbSing import ConfigDbSing
 from TPlot import TPlot
 from TPlot import PltShow
 from Ticker import *
@@ -11,7 +12,11 @@ if __name__ == '__main__':
   print(" ===> Формируем данные для LSTM <===")
   _tPlot = TPlot()
 
-  _path_kaufman = "E:\\MLserver\\Trading01\\NotGit\\Data\\fkaufman.pkl"
+  _connect_db = ConfigDbSing().get_config()
+  _path_kaufman = ConfigDbSing().path_files("Trading01\\NotGit\\Data\\fkaufman.pkl")
+
+  # _path_kaufman = "E:\\MLserver\\Trading01\\NotGit\\Data\\fkaufman.pkl"
+  # _path_kaufman = "E:\\Trading01\\NotGit\\Data\\fkaufman.pkl"
 
   _lPickle = LoadSavePickle()
   _loadFKaufman = _lPickle.load_path(_path_kaufman)
@@ -24,7 +29,8 @@ if __name__ == '__main__':
 
   # _tPlot.PlotDict({'d':_dcfk})
 
-  _path_forLSTMdcfk = "E:\\MLserver\\Trading01\\NotGit\\Data\\forLSTMdcfk.pkl"
+  # _path_forLSTMdcfk = "E:\\MLserver\\Trading01\\NotGit\\Data\\forLSTMdcfk.pkl"
+  _path_forLSTMdcfk = ConfigDbSing().path_files("Trading01\\NotGit\\Data\\forLSTMdcfk.pkl")
   _sPickle = LoadSavePickle({"close": _close, "dcfk":_dcfk})
   _sPickle.save_path(_path_forLSTMdcfk)
 

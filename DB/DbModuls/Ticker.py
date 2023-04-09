@@ -226,7 +226,6 @@ class Ticker(PSQLCommand):
             f" where {_nt}.Pref_Id={_id_pref} " \
             f" and (tdt.datetime >= '{dbmin}' and tdt.datetime <= '{dbmax}')  " \
             f" and {_nt}.tdt_id=tdt.id ORDER BY tdt.datetime"
-
     return self.read_db_to_pandas(_send, ['id', 'datetime', 'open', 'high', 'low', 'close', 'volume'])
 
   def get_ohlcv(self, *args, **kwargs):

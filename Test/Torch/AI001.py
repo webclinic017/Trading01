@@ -1,3 +1,8 @@
+'''
+-- Работает но не правильно
+    переделка -> AI002
+'''
+
 
 from TPlot import TPlot
 from TPlot import PltShow
@@ -56,7 +61,8 @@ if __name__ == '__main__':
   print(" ===> AI-001 <===")
   _tPlot = TPlot()
 
-  _path_forLSTMdcfk = "E:\\MLserver\\Trading01\\NotGit\\Data\\forLSTMdcfk.pkl"
+  # _path_forLSTMdcfk = "E:\\MLserver\\Trading01\\NotGit\\Data\\forLSTMdcfk.pkl"
+  _path_forLSTMdcfk = "E:\\Trading01\\NotGit\\Data\\forLSTMdcfk.pkl"
   _lPickle = LoadSavePickle()
   _loadFKaufman = _lPickle.load_path(_path_forLSTMdcfk)
   _close =  _loadFKaufman.close
@@ -99,8 +105,9 @@ if __name__ == '__main__':
     print(train_input.shape, train_target.shape)
     print(test_input.shape, test_target.shape)
 
-    batch_size = 50
-    device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
+    batch_size = 8
+    # device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
+    device = "cpu" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
     print(f"Using {device} device")
 
     model = LSTMPredictor().to(device)
@@ -114,6 +121,7 @@ if __name__ == '__main__':
 
 
     epochs = 10
+    loss = {}
 
     for t in range(epochs):
       print(f"Epoch {t + 1}\n-------------------------------")
@@ -121,21 +129,26 @@ if __name__ == '__main__':
       model.train()
       # train_input_yx = [(train_input[i],train_target[i]) for i in range(len(train_input)) ]
       for batch in range(batch_size, len(train_input), batch_size):
+        print(f"--> Batch = {batch}")
         X = train_input[batch-batch_size:batch]
         y = train_target[batch-batch_size:batch]
+        def closure():
+          optimizer.zero_grad()
+          output = model(X)
+          loss = loss_fn(output, y)
+          loss.backward()
+          return loss
 
-        # Compute prediction error
-        pred = model(X)
-        loss = loss_fn(pred, y)
+        optimizer.step(closure)
 
-        # Backpropagation
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
+        with torch.no_grad():
+          future = 25
+          pred = model(test_input, future=future)
+          loss = loss_fn(pred[:, :-future], test_target)
+          print("test Loss-", loss.item())
+          y0 = pred.detach().numpy()
 
-        if batch % 1 == 0:
-          loss, current = loss.item(), (batch + 1) * len(X)
-          print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+        kkk=1
 
       # test(test_dataloader, model, loss_fn)
     print("Done!")

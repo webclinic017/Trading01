@@ -99,6 +99,8 @@ if __name__ == '__main__':
   pref_comp = _connect_db["comp_pref"]
   _connect_db['timeframe'] = "4H"   #"1min" "4H"
   _connect_db['TickerName'] = "SBRF"
+  _connect_db['dt0'] = datetime(2007, 8, 1, 0, 0)
+
   _ticker = Ticker(_connect_db)
 
   _close = list( _ticker.get_ohlcv(['close'])['close'].values())
@@ -119,7 +121,8 @@ if __name__ == '__main__':
   masg['stdp'] = _stdp
   masg['stdm'] = _stdm
 
-  _path_kaufman = "E:\\MLserver\\Trading01\\NotGit\\Data\\fkaufman.pkl"
+  # _path_kaufman = "E:\\MLserver\\Trading01\\NotGit\\Data\\fkaufman.pkl"
+  _path_kaufman = "E:\\Trading01\\NotGit\\Data\\fkaufman.pkl"
   _sPickle = LoadSavePickle({"close": _close, "fk":r, 'kp':_stdp, 'km':_stdm})
   _sPickle.save_path(_path_kaufman)
 

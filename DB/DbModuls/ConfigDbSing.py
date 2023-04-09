@@ -60,3 +60,6 @@ class ConfigDbSing:
 
     def path_dan(self):
         return ConfigDbSing.connect_db['Data']
+
+    def path_files(self, s):
+        return  ConfigDbSing.connect_db['comp_pref']+s
