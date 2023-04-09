@@ -20,7 +20,7 @@ class AILstm003_1(nn.Module ):
     x, _ = self.lstm(x)
     x = self.selu(x)
     x = self.linear0(x)
-    x = self.selu(x)
+    # x = self.selu(x)
     # x = self.drop20(x)
     x = self.linear1(x)
     x = self.selu(x)

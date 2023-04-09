@@ -23,11 +23,11 @@ if __name__ == '__main__':
   _tPlot = TPlot()
   _connect_db = ConfigDbSing().get_config()
   _path_forLSTMdcfk = ConfigDbSing().path_files("Trading01\\NotGit\\Data\\forLSTMdcfk.pkl")
-  _step_lstm = 25
+  _step_lstm = 15
   interval_test = 250
   count_min = 0
   count_max = 1500
-  delta=5
+  delta=1
   _dsAi03 = DataSetAI003(_path_forLSTMdcfk,
                          step_count= {'interval_train': -1,
                                       'interval_test': interval_test,

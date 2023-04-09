@@ -56,7 +56,7 @@ class DataSetAI003(DataSetBasa):
     self._input = np.expand_dims(self._input, axis=1)
     self._input_count = len(self._input)
     if self._interval_train <=0:
-      self._interval_train = self._input_count-self._interval_test # -self._delta-2
+      self._interval_train = self._input_count-self._interval_test -self._delta-2
       self.train = self._input[:self._interval_train,:]
       self.test = self._input[-self._interval_test:,:]
     else:
@@ -77,10 +77,10 @@ class DataSetAI003(DataSetBasa):
         target = np.zeros((self._step, 1))
         for j in range(i):
           feature[j]=self._input[j]
-          target[j]=self._input[j+1]
+          target[j]=self._input[j+self._delta]
       else:
         feature = self._input[i-self._step:i, :]
-        target = self._input[i+1 - self._step :i+1 , :] # + self._delta
+        target = self._input[i+self._delta - self._step :i+self._delta , :] # + self._delta
       X.append(feature)
       y.append(target)
 
