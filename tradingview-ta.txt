@@ -1,0 +1,8 @@
+pip install tradingview-ta
+
+from tradingview_ta import TA_...
+https://www.youtube.com/watch?v=1PrhxBoMr7w
+
+ta-lib
+https://www.youtube.com/watch?v=5KHdKZqJg1E
+
