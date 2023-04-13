@@ -7,7 +7,6 @@
 from TPlot import TPlot
 from TPlot import PltShow
 from Ticker import *
-import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
 from sklearn import linear_model
