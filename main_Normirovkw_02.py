@@ -122,7 +122,12 @@ if __name__ == '__main__':
   masg['stdm'] = _stdm
 
   # _path_kaufman = "E:\\MLserver\\Trading01\\NotGit\\Data\\fkaufman.pkl"
-  _path_kaufman = "E:\\Trading01\\NotGit\\Data\\fkaufman.pkl"
+  # _path_kaufman = "E:\\Trading01\\NotGit\\Data\\fkaufman.pkl"
+
+  _connect_db = ConfigDbSing().get_config()
+  _path_kaufman = ConfigDbSing().path_files("Trading01\\NotGit\\Data\\fkaufman.pkl")
+
+
   _sPickle = LoadSavePickle({"close": _close, "fk":r, 'kp':_stdp, 'km':_stdm})
   _sPickle.save_path(_path_kaufman)
 
