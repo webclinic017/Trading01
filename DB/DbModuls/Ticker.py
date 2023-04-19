@@ -231,13 +231,18 @@ class Ticker(PSQLCommand):
   def get_ohlcv(self, *args, **kwargs):
     print('  Грузим данные для обработеи !')
 
-    ls = args[0]
 #    self._dt_begin, self._dt_end = self.db_min_max(self.id_pref)
 
     # __dt0 = kwargs.get('dt0', self.dtmin)
     # __dt1 = kwargs.get('dt1', self.dtmax)
+    _format_id = kwargs.get('formatd', 0) # по умолчанию dict иначе pandas
 
     _dan = self.read_db_pandas(dt0= self.dt0, dt1=self.dt1, id_pref=self.timeframeid)  #self.id_pref
+
+    if args.__len__()==0:
+      return _dan.to_dict() if _format_id==1 else _dan
+    else:
+      ls = args[0]
 
     if 'ohl' in ls:
       _dan['ohl'] = (_dan['open'] + _dan['high'] + _dan['low']) / 3.0
