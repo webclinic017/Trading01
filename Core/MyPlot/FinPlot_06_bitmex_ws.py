@@ -36,20 +36,20 @@ def form_data():
   # volume
 
 def price_history(load_periods=500, interval_mins=1):
-    # symbol = 'XBTUSD'
-    # end_t = int(time()) + 120*interval_mins
-    # end_t -= end_t % (60*interval_mins)
-    # start_t = end_t - load_periods*60*interval_mins
-    # url = baseurl + '/udf/history?symbol=%s&resolution=%s&from=%s&to=%s' % (symbol, interval_mins, start_t, end_t)
-    # d = requests.get(url).json()
-    # # drop volume and status
-    # del d['v']
-    # del d['s']
-    # return d
+    symbol = 'XBTUSD'
+    end_t = int(time()) + 120*interval_mins
+    end_t -= end_t % (60*interval_mins)
+    start_t = end_t - load_periods*60*interval_mins
+    url = baseurl + '/udf/history?symbol=%s&resolution=%s&from=%s&to=%s' % (symbol, interval_mins, start_t, end_t)
+    d = requests.get(url).json()
+    # drop volume and status
+    del d['v']
+    del d['s']
+    return d
 
-    df = form_data()
-    # df = df.set_index('datetime')
-    return df
+    # df = form_data()
+    # # df = df.set_index('datetime')
+    # return df
 
 
 def calc_bollinger_bands(df):

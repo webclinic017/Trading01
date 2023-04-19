@@ -46,12 +46,12 @@ def update():
     # load data
     limit = 500
     start = int(time.time()*1000) - (500-2)*60*1000
-    # url = 'https://api.bitfinex.com/v2/candles/trade:1m:tBTCUSD/hist?limit=%i&sort=1&start=%i' % (limit, start)
-    # table = requests.get(url).json()
-    # df = pd.DataFrame(table, columns='time open close high low volume'.split())
-    df = form_data()
-    # df = df.set_index('datetime')
-    # calculate indicator
+    url = 'https://api.bitfinex.com/v2/candles/trade:1m:tBTCUSD/hist?limit=%i&sort=1&start=%i' % (limit, start)
+    table = requests.get(url).json()
+    df = pd.DataFrame(table, columns='time open close high low volume'.split())
+    # df = form_data()
+    #   # df = df.set_index('datetime')
+    #   # calculate indicator
     _close = df['close']
     tdup,tddn = td_sequential(_close)
     df['tdup'] = [('%i'%i if 0<i<10 else '') for i in tdup]
@@ -60,10 +60,14 @@ def update():
     print(df.columns.values)
     print(df.head())
     # pick columns for our three data sources: candlesticks and TD sequencial labels for up/down
-    candlesticks = df['datetime open close high low'.split()]
-    volumes = df['datetime open close volume'.split()]
-    td_up_labels = df['datetime  high tdup'.split()]
-    td_dn_labels = df['datetime  low tddn'.split()]
+    # candlesticks = df['datetime open close high low'.split()]
+    # volumes = df['datetime open close volume'.split()]
+    # td_up_labels = df['datetime  high tdup'.split()]
+    # td_dn_labels = df['datetime  low tddn'.split()]
+    candlesticks = df['time open close high low'.split()]
+    volumes = df['time open close volume'.split()]
+    td_up_labels = df['time  high tdup'.split()]
+    td_dn_labels = df['time  low tddn'.split()]
 
     plot_candles.candlestick_ochl(candlesticks)
     plot_volume.volume_ocv(volumes, ax=ax.overlay())
