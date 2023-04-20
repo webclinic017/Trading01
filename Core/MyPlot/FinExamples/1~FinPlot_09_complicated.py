@@ -141,7 +141,7 @@ def load_price_history(symbol, interval):
     return df
 
 
-def calc_parabolic_sar(df, af=0.2, steps=10):
+def calc_parabolic_sar(df: object, af: object = 0.2, steps: object = 10) -> object:
     up = True
     sars = [nan] * len(df)
     sar = ep_lo = df.Low.iloc[0]
