@@ -5,20 +5,27 @@ import pandas as pd
 class VG01:
   def __init__(self, *args, **kwds):
     print("  ____ class VG ---> View Graph ____ ")
+
+    # if 'self.df' in locals():
+    #   print('Variable exist.')
+    # else:
+    #   print('Variable don\'t exist.')
+
     if args.__len__()==0:
       raise Exception(' Нет данных для обработки ')
 
     # if str(type(args[0])).find('pandas') >=0:
     if 'pandas'in str(type(args[0])):
-        self._df = args[0]
+        self.df = args[0]
     else:
       raise Exception(' Первый аргумент не pandas ')
 
     self._config = kwds.get("config", None)
 
+
   def run(self):
     if self._config == None:
-      fplt.candlestick_ochl(self._df[['open', 'close', 'high', 'low']])
+      fplt.candlestick_ochl(self.df[['open', 'close', 'high', 'low']])
       fplt.autoviewrestore()
       fplt.show()
       return
@@ -37,19 +44,21 @@ class VG01:
       _ls_val = list(val.keys())
       for it in _ls_val:
         if 'candle' in it:
-          self._df[['open', 'close', 'high', 'low']].plot(ax=ax[key], kind='candle')
+          self.df[['open', 'close', 'high', 'low']].plot(ax=ax[key], kind='candle')
           continue
 
         if 'volume' in it:
-          self._df[['open', 'close', 'volume']].plot(ax=ax[key], kind='volume')
+          self.df[['open', 'close', 'volume']].plot(ax=ax[key], kind='volume')
           continue
 
-        fplt.plot(self._df[it], legend=it, ax=ax[key])
+        fplt.plot(self.df[it], legend=it, ax=ax[key])
         k=1
       k=1
 
     fplt.autoviewrestore()
     fplt.show()
+
+'''
 
       # _pkeys['config'] = {"point": 300, "color": 0, "name": "--- SBRF ---"}
       # _pkeys[0] = {"candle": 0, "kama": 0, "sma": 0}
@@ -67,7 +76,7 @@ class VG01:
       #
       # pass
 
-'''
+
   df = Db_form_data() # timeframe='1min'
   # fplt.candlestick_ochl(df[['open', 'close', 'high', 'low']])  # , 'volume'
   # ax, axv, axstoch = fplt.create_plot(' -- SBRF -- ', rows=3, init_zoom_periods=300)

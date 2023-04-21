@@ -26,3 +26,4 @@ def indicator01(df: pd, *args, **kwds):
   _pkeys[3] = {'rsi': 0}
 
   return df, _pkeys
+
