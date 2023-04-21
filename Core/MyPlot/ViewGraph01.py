@@ -6,11 +6,6 @@ class VG01:
   def __init__(self, *args, **kwds):
     print("  ____ class VG ---> View Graph ____ ")
 
-    # if 'self.df' in locals():
-    #   print('Variable exist.')
-    # else:
-    #   print('Variable don\'t exist.')
-
     if args.__len__()==0:
       raise Exception(' Нет данных для обработки ')
 
