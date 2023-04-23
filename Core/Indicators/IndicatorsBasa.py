@@ -34,10 +34,15 @@ class IndicatorsBasa():
         pass
       else:
         self.df[key]=val['d']
-      __dx = self.cplot[val['ax']] if val['ax'] in self.cplot else {}
-      __dx[key]=val['ax']
-      self.cplot[val['ax']]= __dx
 
+      __dx = self.cplot[val['ax']] if val['ax'] in self.cplot else {}
+      _ = val.pop('d')
+      n = val.pop('ax')
+      __dx[key]= n #val['ax']
+      __dx['params'] = val
+      # self.cplot[val['ax']]= __dx
+      self.cplot[n]= __dx
+      kkk=1
 
   def get(self, ls_indicator: list = [], typeour=0):  # pandas = 0, 1-dict
     if ls_indicator.__len__() == 0:
