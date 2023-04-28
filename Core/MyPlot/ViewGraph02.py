@@ -26,6 +26,7 @@ class VG02(IndicatorsBasa):
     __config =  self.cplot.get('config', None)
     _ = self.cplot.pop('config', None)
     _count_ax = len(self.cplot)
+    __params = self.cplot.pop('params', None)
 
     if __config == None:
       ax = fplt.create_plot(' -- not name -- ', rows = _count_ax, init_zoom_periods = 300)
@@ -46,6 +47,10 @@ class VG02(IndicatorsBasa):
           continue
 
         fplt.plot(self.df[it], legend=it, ax=ax[key])
+        __params = val[it]
+        kkkk=1
+        # fplt.plot(self.df[it], legend=it, ax=key)
 
     fplt.autoviewrestore()
     fplt.show()
+    kkkk=1

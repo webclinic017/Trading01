@@ -20,7 +20,7 @@ class IndicatorsBasa():
       raise Exception(' Нет данных по свечам и объему ')
 
     ''' Это база для свечей '''
-    self.cplot={}
+    self.cplot = {}
     self.cplot['config'] = kwargs.get('config_plot', {})
     self.cplot[0] = {"candle": 0}
 
@@ -33,16 +33,29 @@ class IndicatorsBasa():
       if key == 'volume':
         pass
       else:
-        self.df[key]=val['d']
+        self.df[key] = val['d']
 
       __dx = self.cplot[val['ax']] if val['ax'] in self.cplot else {}
       _ = val.pop('d')
       n = val.pop('ax')
-      __dx[key]= n #val['ax']
-      __dx['params'] = val
+      __params = {}
+
+      if len(val) == 0:
+        pass
+      else:
+        __params['params'] = val
+
+      # __dx[key] = __params
+      __dx[key] = val
+      # __dx['params'] = val
+      # __dx[key]= n #val['ax']
+      # __dx['params'] = val
       # self.cplot[val['ax']]= __dx
-      self.cplot[n]= __dx
-      kkk=1
+      self.cplot[n] = __dx
+      kkk = 1
+    hhh=1
+
+
 
   def get(self, ls_indicator: list = [], typeour=0):  # pandas = 0, 1-dict
     if ls_indicator.__len__() == 0:
