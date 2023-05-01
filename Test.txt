@@ -13,5 +13,12 @@ https://jalammar.github.io/illustrated-transformer/
 transformers-------
 transformer neural network example
 
+---------- PLOT  ------------------------------
+mplfinance python example
+https://github.com/matplotlib/mplfinance
 
+
+-------  BackTrader ----------------
+https://www.backtrader.com/
+https://github.com/mementum/backtrader
 
