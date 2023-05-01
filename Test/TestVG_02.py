@@ -30,7 +30,7 @@ if __name__ == '__main__':
   # _n_kama=5
   __array=np.zeros(_n_kama)
   _kama_moment = _kama- (np.concatenate([__array, _kama])[:_count])
-  d["kama_moment"] = {"d": _kama_moment, 'ax': _ax, 'level':[0, 10, -10], 'color':['r', 'g', 'b']}
+  d["kama_moment"] = {"d": _kama_moment, 'ax': _ax, 'level':[0, 1, -2], 'color':['r', 'g', 'b']}
   _ax+=1
   # fplt.set_y_range(0, 100, ax=ax)
   # fplt.add_band(30, 70, ax=ax)
@@ -38,7 +38,7 @@ if __name__ == '__main__':
   # d["volume"]={"d":None, 'ax':_ax}
   # _ax+=1
 
-  d["rsi"] = {"d": talib.RSI(_cx, timeperiod=15), 'ax': _ax}
+  d["rsi"] = {"d": talib.RSI(_cx, timeperiod=15), 'ax': _ax, 'band':[30, 70,], 'color':['r', 'g', 'b']}
 
   _indi.add_indicator(d)
 

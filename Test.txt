@@ -17,3 +17,8 @@ transformer neural network example
 mplfinance python example
 https://github.com/matplotlib/mplfinance
 
+
+-------  BackTrader ----------------
+https://www.backtrader.com/
+https://github.com/mementum/backtrader
+
