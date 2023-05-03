@@ -42,6 +42,7 @@ class St(bt.SignalStrategy):
 
 def runstrat(args=None):
     args = parse_args(args)
+    # args.plot = True
 
     cerebro = bt.Cerebro()
 
@@ -75,9 +76,10 @@ def runstrat(args=None):
     for k, v in st0.analyzers.calmar.get_analysis().items():
         print(i, ': '.join((str(k), str(v))))
         i += 1
-
-    if args.plot:  # Plot if requested to
-        cerebro.plot(**eval('dict(' + args.plot + ')'))
+    # if args.plot:  # Plot if requested to
+    #     cerebro.plot(**eval('dict(' + args.plot + ')'))
+    # cerebro.plot(**eval('dict(' + args.plot + ')'))
+    cerebro.plot()
 
 
 def parse_args(pargs=None):

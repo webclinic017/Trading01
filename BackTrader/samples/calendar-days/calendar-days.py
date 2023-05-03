@@ -32,7 +32,7 @@ import backtrader.filters as btfilters
 
 def runstrat():
     args = parse_args()
-
+    args.plot=True
     # Create a cerebro entity
     cerebro = bt.Cerebro(stdstats=False)
 
@@ -72,7 +72,7 @@ def runstrat():
     cerebro.run()
 
     # Plot if requested
-    if args.plot==False:
+    if args.plot:
         cerebro.plot(style='bar', numfigs=args.numfigs, volume=False)
 
 

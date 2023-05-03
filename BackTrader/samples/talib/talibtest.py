@@ -134,13 +134,15 @@ def runstrat(args=None):
     cerebro.addstrategy(TALibStrategy, ind=args.ind, doji=not args.no_doji)
 
     cerebro.run(runcone=not args.use_next, stdstats=False)
-    if args.plot:
+    if args.plot is not True:
         pkwargs = dict(style='candle')
-        if args.plot is not True:  # evals to True but is not True
-            npkwargs = eval('dict(' + args.plot + ')')  # args were passed
-            pkwargs.update(npkwargs)
+
+        # if args.plot is not True:  # evals to True but is not True
+        #     npkwargs = eval('dict(' + args.plot + ')')  # args were passed
+        #     pkwargs.update(npkwargs)
 
         cerebro.plot(**pkwargs)
+        kk=1
 
 
 def parse_args(pargs=None):
