@@ -119,7 +119,7 @@ class LongShortStrategy(bt.Strategy):
 
 def runstrategy():
     args = parse_args()
-
+    args.plot = True
     # Create a cerebro
     cerebro = bt.Cerebro()
 
@@ -233,7 +233,7 @@ def parse_args():
 
     parser.add_argument('--numfigs', '-n', default=1,
                         help='Plot using numfigs figures')
-    # parser.plot = True
+
     return parser.parse_args()
 
 

@@ -109,7 +109,7 @@ def runstrat(args=None):
     # Execute
     cerebro.run(**eval('dict(' + args.cerebro + ')'))
 
-    if args.plot:  # Plot if requested to
+    if not(args.plot):  # Plot if requested to
         cerebro.plot(**eval('dict(' + args.plot + ')'))
 
 

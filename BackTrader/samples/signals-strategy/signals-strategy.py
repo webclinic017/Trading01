@@ -87,6 +87,9 @@ def runstrat(args=None):
                            p2=args.smaperiod)
 
     cerebro.run()
+    pkwargs = dict(style='bar')
+    cerebro.plot(**pkwargs)
+
     if args.plot:
         pkwargs = dict(style='bar')
         if args.plot is not True:  # evals to True but is not True
@@ -124,8 +127,11 @@ def parse_args(pargs=None):
                         type=int, default=5,
                         help=('Period for the exit control SMA'))
 
+    __x = list(MAINSIGNALS.keys())
+    default1 = list(MAINSIGNALS.keys())[0]
     parser.add_argument('--signal', required=False, action='store',
-                        default=MAINSIGNALS.keys()[0], choices=MAINSIGNALS,
+                        # default=MAINSIGNALS.keys()[0], choices=MAINSIGNALS,
+                        default = list(MAINSIGNALS.keys())[0], choices=MAINSIGNALS,
                         help=('Signal type to use for the main signal'))
 
     parser.add_argument('--exitsignal', required=False, action='store',

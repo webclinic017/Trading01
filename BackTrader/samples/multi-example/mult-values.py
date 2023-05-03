@@ -168,8 +168,10 @@ def runstrat(args=None):
     # Execute
     cerebro.run(**eval('dict(' + args.cerebro + ')'))
 
-    if args.plot:  # Plot if requested to
-        cerebro.plot(**eval('dict(' + args.plot + ')'))
+    # if args.plot:  # Plot if requested to
+    #     cerebro.plot(**eval('dict(' + args.plot + ')'))
+
+    cerebro.plot(**eval('dict(' + args.plot + ')'))
 
 
 def parse_args(pargs=None):
