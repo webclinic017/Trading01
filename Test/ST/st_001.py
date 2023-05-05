@@ -14,6 +14,7 @@ from backtrader.analyzers import (SQN, AnnualReturn, TimeReturn, SharpeRatio,
 
 
 import ST_test_001 as st0
+from Db_form_data import Db_form_data
 
 
 def runstrategy():
@@ -26,19 +27,17 @@ def runstrategy():
   fromdate = datetime.datetime.strptime(args.fromdate, '%Y-%m-%d')
   todate = datetime.datetime.strptime(args.todate, '%Y-%m-%d')
 
-  # Create the 1st data
-  data = btfeeds.BacktraderCSVData(
-    dataname=args.data,
-    fromdate=fromdate,
-    todate=todate)
+  df = Db_form_data(formatd=2) # timeframe='1min'  formatd=2 - для backtrader
+  _count_df = len(df)
+  x = df.index.tolist()[0]
+
+  data = bt.feeds.PandasData(dataname=df, nocase=True,)
 
   # Add the 1st data to cerebro
   cerebro.adddata(data)
 
-  # Add the strategy
-  # _st0 = st0.LongShortStrategy()
 
-  cerebro.addstrategy(st0.LongShortStrategy,
+  cerebro.addstrategy(st0.LongShortStrategy,    # Add the strategy
                       period=args.period,
                       onlylong=args.onlylong,
                       csvcross=args.csvcross,
@@ -75,8 +74,10 @@ def runstrategy():
   cerebro.run()
 
   # Plot if requested
-  if args.plot:
-    cerebro.plot(numfigs=args.numfigs, volume=False, zdown=False)
+  cerebro.plot(numfigs=args.numfigs, volume=False, zdown=False)
+
+  # if args.plot:
+  #   cerebro.plot(numfigs=args.numfigs, volume=False, zdown=False)
 
 def parse_args():
     parser = argparse.ArgumentParser(description='TimeReturn')
