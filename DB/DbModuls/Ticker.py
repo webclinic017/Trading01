@@ -37,8 +37,6 @@ class Ticker(PSQLCommand):
              "FOREIGN KEY (TDT_id) REFERENCES TDT (Id) ON DELETE CASCADE,	" \
              "ohlcv real[]);"
       self.fcommand_execute(send)
-      # id = self.__getattribute__('timeframeid')
-      # db_min, db_max = self.db_min_max(id)
       self.__set_attr({"dtmin": datetime.now(), "dtmax": datetime.now()})
       return
 
@@ -228,22 +226,8 @@ class Ticker(PSQLCommand):
             f" and {_nt}.tdt_id=tdt.id ORDER BY tdt.datetime"
     return self.read_db_to_pandas(_send, ['id', 'datetime', 'open', 'high', 'low', 'close', 'volume'])
 
-  def get_ohlcv(self, *args, **kwargs):
-    print('  Грузим данные для обработеи !')
 
-#    self._dt_begin, self._dt_end = self.db_min_max(self.id_pref)
-
-    # __dt0 = kwargs.get('dt0', self.dtmin)
-    # __dt1 = kwargs.get('dt1', self.dtmax)
-    _format_id = kwargs.get('formatd', 0) # по умолчанию dict иначе pandas
-
-    _dan = self.read_db_pandas(dt0= self.dt0, dt1=self.dt1, id_pref=self.timeframeid)  #self.id_pref
-
-    if args.__len__()==0:
-      return _dan.to_dict() if _format_id==1 else _dan
-    else:
-      ls = args[0]
-
+  def __get_ohlcv(self, _dan, ls:list):
     if 'ohl' in ls:
       _dan['ohl'] = (_dan['open'] + _dan['high'] + _dan['low']) / 3.0
     if 'hlc' in ls:
@@ -261,8 +245,33 @@ class Ticker(PSQLCommand):
       _dan.drop(columns=['close'], axis=1, inplace=True)
     if not ('volume' in ls):
       _dan.drop(columns=['volume'], axis=1, inplace=True)
+    return _dan
 
-    return _dan.to_dict()
+  def get_ohlcv(self, *args, **kwargs):
+    print('  Грузим данные для обработеи !')
+
+    _format_id = kwargs.get('formatd', 0) # по умолчанию dict иначе pandas
+
+    _dan = self.read_db_pandas(dt0= self.dt0, dt1=self.dt1, id_pref=self.timeframeid)  #self.id_pref
+
+    '''  Формируем данные '''
+    if args.__len__() > 0:
+      _dan = self.__get_ohlcv(_dan, args[0])
+
+    '''  Формируем ФОРМАТ данных '''
+    match _format_id:
+      case 0:
+        return _dan
+      case 1:
+        return _dan.to_dict()
+      case 2:
+        _dan = _dan.set_index('datetime', drop = True)
+        _dan.drop(columns=['id'], axis=1, inplace=True)
+        _dan.rename(columns={'open': 'Open', 'high': 'High', 'low': 'Low', 'close': 'Close', 'volume': 'Volume'}, inplace=True)
+        _dan['OpenInterest'] = 0
+        # print(_dan1.head())
+        return _dan
+    return _dan
 
   def get_dan(self, dan: dict, t: int = 0):
     print(f"  Конверт данных {self.timeframeName} и вывод в формате  xx: LIST !")
